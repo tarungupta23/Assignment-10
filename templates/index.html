@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Heart Disease Risk Predictor</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; background:#f7f7fb; }
+  h1 { color: #1f2937; }
+  form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  label { font-size: 13px; color: #374151; display:flex; flex-direction:column; gap:4px; }
+  input { padding: 6px 8px; border: 1px solid #d1d5db; border-radius: 6px; }
+  button { grid-column: 1 / -1; padding: 10px; background:#2563eb; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:15px; }
+  button:hover { background:#1d4ed8; }
+  #result { margin-top: 16px; padding: 12px; border-radius: 8px; font-weight: bold; text-align:center; }
+</style>
+</head>
+<body>
+  <h1>Heart Disease Risk Predictor</h1>
+  <p>Enter patient clinical parameters below.</p>
+  <form id="predict-form">
+    {% for f in features %}
+    <label>{{ f }}
+      <input type="number" step="any" name="{{ f }}" required>
+    </label>
+    {% endfor %}
+    <button type="submit">Predict</button>
+  </form>
+  <div id="result"></div>
+
+<script>
+document.getElementById("predict-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const payload = {};
+  formData.forEach((v, k) => payload[k] = v);
+
+  const res = await fetch("/predict", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  const resultDiv = document.getElementById("result");
+  if (data.error) {
+    resultDiv.style.background = "#fee2e2";
+    resultDiv.textContent = "Error: " + data.error;
+  } else {
+    resultDiv.style.background = data.prediction.includes("No") ? "#dcfce7" : "#fee2e2";
+    resultDiv.textContent = data.prediction + (data.confidence ? ` (confidence: ${data.confidence})` : "");
+  }
+});
+</script>
+</body>
+</html>
