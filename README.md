@@ -4,7 +4,7 @@ A machine learning web service that predicts a patient's risk of heart disease f
 
 🔗 **Dataset:** [Heart Disease Dataset — Kaggle (johnsmith88)](https://www.kaggle.com/datasets/johnsmith88/heart-disease-dataset)
 
-🚀 **Live Demo:** https://heartdisease-8q6o.onrender.com
+🚀 **Render Deployment Link:** https://heartdisease-8q6o.onrender.com
 
 ## Overview
 
