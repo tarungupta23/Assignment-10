@@ -3,7 +3,8 @@
 A machine learning web service that predicts a patient's risk of heart disease from clinical parameters, built with scikit-learn and served via a Flask REST API. Deployed on Render.
 
 🔗 **Dataset:** [Heart Disease Dataset — Kaggle (johnsmith88)](https://www.kaggle.com/datasets/johnsmith88/heart-disease-dataset)
-🚀 **Live Demo:** `https://<your-app>.onrender.com` *(update after deploying)*
+
+🚀 **Live Demo:** https://heartdisease-8q6o.onrender.com
 
 ## Overview
 
@@ -150,6 +151,3 @@ This project is configured to deploy on [Render](https://render.com):
 
 Logistic Regression was chosen for this classification task and achieved 80% accuracy on unseen patient data after correcting a data quality issue: the raw Kaggle CSV contained 723 duplicate rows, which would have leaked test patients into the training set and produced a misleadingly perfect score. After de-duplicating to 302 genuine patient records and evaluating on a proper held-out split, Logistic Regression proved a solid, interpretable choice for a clinical setting — its coefficients can be inspected to see which factors (e.g. chest pain type, ST depression) drive risk, which matters for trust in healthcare applications. The main challenges during development involved catching that data leakage before it silently inflated confidence in the model, keeping the API's input feature order perfectly aligned with training, handling malformed JSON gracefully, and configuring a production-ready start command (`gunicorn`) since Flask's built-in server isn't meant for live traffic. This project is a good example of why MLOps matters: a model is only trustworthy once its data pipeline, evaluation, and serving layer are all treated with the same rigor as the algorithm itself. Practices like validating for leakage, saving model metadata alongside the model, and using a reproducible `requirements.txt` are what separate a notebook experiment from a dependable, maintainable application.
 
-## License
-
-This project is available for educational use.
